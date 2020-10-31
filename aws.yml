@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  roles:
+    - role: aws/ec2
+  vars:
+    ami_image: ami-0ce107ae7af2e92b5
+    key_name: koagen_dev
+    tag_name:
+    instance_type: "t2.micro"
+    device_name: "/dev/xvda"
+    device_type: "gp2"
+    volume_size: 30
+    region: ap-northeast-1
+    security_group:
+      -
+    vpc_subnet_id: 
+    assign_public_ip: yes

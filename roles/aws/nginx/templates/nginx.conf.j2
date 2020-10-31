@@ -1,0 +1,50 @@
+user {{ nginx_user }};
+
+events {
+    worker_connections {{ nginx_woker_processes }};
+}
+
+http {
+    root   {{ app_dir }}/current;
+    upstream {{ app_name }} {
+        server unix:{{ app_dir }}/shared/tmp/sockets/puma.sock
+        fail_timeout=0;
+    }
+
+    server {
+        listen 80;
+        client_max_body_size 4G;
+        server_name {{ server_name }};
+        keepalive_timeout 80;
+        access_log /var/log/nginx/access.log;
+        error_log /var/log/nginx/error.log;
+
+        root   {{ app_dir }}/current;
+
+        location = /elb {
+          proxy_pass http://{{ app_name }};
+        }
+        location ~ ^/assets/ {
+            include /etc/nginx/mime.types;
+            root     {{ app_dir }}/current/public;
+        }
+       location / {
+            proxy_pass http://{{ app_name }};
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $host;
+        }
+        error_page   500 502 503 504  /500.html;
+        location = /500.html {
+            root  {{ app_dir }}/current/public;
+        }
+        location /sitemap.xml {
+           root  {{ app_dir }}/current/public/sitemaps;
+        }
+        location /sitemap.xml.gz {
+           root  {{ app_dir }}/current/public/sitemaps;
+        }
+        location ~ ^/sitemaps/(robots.txt|sitemap(.*).xml.gz) {
+           root  {{ app_dir }}/current/public;
+        }
+    }
+}

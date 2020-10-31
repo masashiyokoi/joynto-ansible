@@ -1,0 +1,14 @@
+- hosts: servers
+  remote_user: ec2-user
+  become: yes
+  vars:
+    rbenv_user: joynto
+    rbenv_ruby_version: 2.7.2
+    app_name: joynto.life
+    app_dir: /var/www/joynto
+    server_name: joynto
+    nginx_user: joynto
+    users:
+      - { name: 'joynto', uid: 601, group: 'joynto', gid: 601, password: "password", update_password: 'on_create', comment: 'joynto' }
+  roles:
+    - aws/nginx
