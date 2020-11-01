@@ -7,7 +7,7 @@ events {
 http {
     root   {{ app_dir }}/current;
     upstream {{ app_name }} {
-        server unix:{{ app_dir }}/shared/tmp/sockets/puma.sock
+        server unix:{{ app_dir }}/tmp/sockets/puma.sock
         fail_timeout=0;
     }
 

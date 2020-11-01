@@ -11,4 +11,8 @@
     users:
       - { name: 'joynto', uid: 601, group: 'joynto', gid: 601, password: "password", update_password: 'on_create', comment: 'joynto' }
   roles:
+    - aws/yum-update
+    - aws/user
+    - aws/app_dir
+    - aws/rbenv
     - aws/nginx

@@ -61,7 +61,7 @@
   when: rbenv_check_default.rc == 1
 
 - name: Install Mysql repository
-  yum: name=http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm state=present
+  yum: name=https://dev.mysql.com/get/mysql80-community-release-el7-2.noarch.rpm state=present
 
 - name: Install packages
   yum: name={{ item }} state=latest
@@ -82,6 +82,8 @@
     - mysql
     - mysql-server
     - mysql-devel
+    - ImageMagick
+    - ImageMagick-devel
 
 - name: Install bundler
   become_user: "{{ rbenv_user }}"
